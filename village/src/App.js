@@ -22,6 +22,16 @@ class App extends Component {
     this.setState({ smurfs: res.data });
   }
 
+  componentDidUpdate = async () => {
+    const res = await axios.get('http://localhost:3333/smurfs');
+    this.setState({ smurfs: res.data });
+  }
+
+  deleteSmurf = async (e, id) => {
+    e.preventDefault();
+    const res = await axios.delete(`http://localhost:3333/smurfs/${id}`);
+    this.setState({ smurfs: res.data });
+  };
 
   render() {
     return (
@@ -39,6 +49,7 @@ class App extends Component {
           render = {props => (
             <SmurfForm 
               {...props}
+              history={this.props.history}
             />
           )}
         />
@@ -48,6 +59,7 @@ class App extends Component {
             <Smurfs 
               {...props}
               smurfs={this.state.smurfs} 
+              deleteSmurf={this.deleteSmurf}
             />
           )}
         />
